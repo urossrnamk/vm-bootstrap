@@ -7,7 +7,7 @@ Bootstrap configuration for R&D VMs.
 - AlmaLinux 10
 - Docker
 - Traefik
-- `*.rnd.mladinska-knjiga.si`
+- `*.test.example.com`
 - Applications deployed as Docker containers
 
 ## Prerequisites
@@ -17,7 +17,7 @@ A fresh VM requires:
 - SSH access
 - Internet access
 - GitHub deploy key with read access to this repository
-- DNS pointing `*.rnd.mladinska-knjiga.si` to the VM
+- DNS pointing `*.test.example.com` to the VM
 - TCP 80 and 443 allowed to the VM
 
 ## Initial setup
@@ -140,12 +140,12 @@ Edit:
 
 Set the domain assigned to this host:
 
-    HOME_DOMAIN=rnd.mladinska-knjiga.si
+    HOME_DOMAIN=test.example.com
 
 DNS should contain records equivalent to:
 
-    rnd.mladinska-knjiga.si      → server IP
-    *.rnd.mladinska-knjiga.si    → server IP
+    test.example.com      → server IP
+    *.test.example.com    → server IP
 
 The bootstrap stack will initially provide:
 
