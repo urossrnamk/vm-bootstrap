@@ -6,7 +6,7 @@ Bootstrap configuration for R&D VMs.
 
 - AlmaLinux 10
 - Docker
-- Apache reverse proxy
+- Traefik
 - `*.rnd.mladinska-knjiga.si`
 - Applications deployed as Docker containers
 

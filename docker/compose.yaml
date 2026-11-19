@@ -1,0 +1,61 @@
+services:
+
+  traefik:
+    image: traefik:v3
+    container_name: traefik
+    restart: unless-stopped
+
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=proxy"
+      - "--entrypoints.web.address=:80"
+      - "--log.level=INFO"
+
+    ports:
+      - "80:80"
+
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+    networks:
+      - proxy
+
+
+  home:
+    build:
+      context: ./apps/home
+
+    container_name: home
+    restart: unless-stopped
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.home.rule=Host(`${HOME_DOMAIN}`)"
+      - "traefik.http.routers.home.entrypoints=web"
+      - "traefik.http.services.home.loadbalancer.server.port=80"
+
+    networks:
+      - proxy
+
+
+  demo:
+    build:
+      context: ./apps/demo
+
+    container_name: demo
+    restart: unless-stopped
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.demo.rule=Host(`demo.${HOME_DOMAIN}`)"
+      - "traefik.http.routers.demo.entrypoints=web"
+      - "traefik.http.services.demo.loadbalancer.server.port=80"
+
+    networks:
+      - proxy
+
+
+networks:
+  proxy:
+    name: proxy
