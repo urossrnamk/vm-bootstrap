@@ -28,7 +28,13 @@ Log into the fresh VM as root.
 
     dnf install -y git
 
-### 2. Configure GitHub SSH access
+### 2.a If Git Repo is set to public:
+
+    cd /srv
+    git clone https://github.com/YOUR-USERNAME/vm-bootstrap.git
+
+
+### 2.b If Git Repo is private - Configure GitHub SSH access
 
 The VM uses its own SSH key for read-only access to the bootstrap
 repository. Do not reuse a personal SSH key.
@@ -94,13 +100,15 @@ on the standard port 22 may be blocked by the corporate network.
 
     mkdir -p /srv
     cd /srv
-    git clone git@github.com:COMPANY/vm-bootstrap.git
+    git clone git@github.com:urossrnamk/vm-bootstrap.git
 
 ### 4. Bootstrap the server
 
-    cd /srv/vm-bootstrap
+    cd vm-bootstrap
+    cp docker/.env.example docker/.env
+    vi docker/.env  //set the home domain
+    chmod +x bootstrap.sh scripts/*.sh
     ./bootstrap.sh
-
 
 ## What the bootstrap does
 
@@ -150,4 +158,5 @@ DNS should contain records equivalent to:
 The bootstrap stack will initially provide:
 
     HOME_DOMAIN                  → home page
-    hello.HOME_DOMAIN            → PHP test application
+    demo.HOME_DOMAIN            → PHP test application
+
