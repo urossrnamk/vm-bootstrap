@@ -4,3 +4,4 @@
 *.key
 *.pem
 secrets/
+docker/dozzle/users.yml

@@ -1,0 +1,8 @@
+users:
+    uros:
+        email: uros.srna@mladinska-knjiga.si
+        name: Uroš Srna
+        password: $2a$11$nkYFV.MywZt/rLQ5LO6H7urwDdzBCS3P7DwpYQ4C6DZJ44bOPpFRy
+        github: ""
+        filter: ""
+        roles: ""
