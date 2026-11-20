@@ -9,14 +9,26 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=proxy"
+
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+
+      - "--certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+
       - "--log.level=INFO"
 
     ports:
       - "80:80"
+      - "443:443"
 
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "letsencrypt:/letsencrypt"
 
     networks:
       - proxy
@@ -32,7 +44,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.home.rule=Host(`${HOME_DOMAIN}`)"
-      - "traefik.http.routers.home.entrypoints=web"
+      - "traefik.http.routers.home.entrypoints=websecure"
+
+      - "traefik.http.routers.home.tls=true"
+      - "traefik.http.routers.home.tls.certresolver=letsencrypt"
+
       - "traefik.http.services.home.loadbalancer.server.port=80"
 
     networks:
@@ -49,7 +65,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.demo.rule=Host(`demo.${HOME_DOMAIN}`)"
-      - "traefik.http.routers.demo.entrypoints=web"
+      - "traefik.http.routers.demo.entrypoints=websecure"
+
+      - "traefik.http.routers.demo.tls=true"
+      - "traefik.http.routers.demo.tls.certresolver=letsencrypt"
+
       - "traefik.http.services.demo.loadbalancer.server.port=80"
 
     networks:
