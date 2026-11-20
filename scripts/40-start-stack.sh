@@ -28,3 +28,12 @@ docker compose up -d
 
 echo
 docker compose ps
+
+# so that there will be no errors if example users.yml file is not renamed and edited
+if [ ! -f "${DOCKER_DIR}/dozzle/users.yml" ]; then
+    echo "ERROR: docker/dozzle/users.yml does not exist."
+    echo
+    echo "Create it first:"
+    echo "  cp docker/dozzle/users.yml.example docker/dozzle/users.yml"
+    exit 1
+fi
